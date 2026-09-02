@@ -26,56 +26,71 @@ pip-pipeline/
 
 ---
 
-## Stage 1: Image-to-3D via Google Colab (TripoSR)
+## Stage 1: Image-to-3D
 
 ### Overview
 
-Since the local machine has no GPU (2019 Intel MacBook), 3D model generation runs on **Google Colab's free GPU tier** using **TripoSR**, an open-source image-to-3D model by Stability AI and Tripo.
+Convert 2D reference image → 3D mesh (GLB format). Two options:
+
+**Option A (Recommended): Online Web Tool** — No installation, instant  
+**Option B (Advanced): Google Colab** — Full automation, requires GPU setup
 
 **Input:** 2D reference image (e.g., `assets/reference/pip_reference.png`)  
 **Output:** 3D mesh in GLB format (e.g., `assets/meshes/pip_model.glb`)  
-**Runtime:** ~2–5 minutes on Colab GPU
+**Time:** 5–10 minutes total
 
-### How to Use
+---
 
-#### 1. Open the Notebook in Google Colab
+### Option A: Online Tool (Easiest) ✨
+
+Use **Wonder3D** via Hugging Face Spaces — no installation needed:
+
+1. Go to: [huggingface.co/spaces/flamingame/Wonder3D](https://huggingface.co/spaces/flamingame/Wonder3D)
+2. Upload `assets/reference/pip_reference.png`
+3. Wait ~2–5 minutes for processing
+4. Download the `.glb` file
+5. Save to: `assets/meshes/pip_model.glb`
+
+**Pros:** Works instantly, no setup, no GPU required locally  
+**Cons:** Depends on HF Spaces availability, slower than local GPU
+
+---
+
+### Option B: Google Colab Notebook
+
+If you prefer full automation on free GPU:
+
+#### 1. Open the Notebook
 
 - Go to [colab.research.google.com](https://colab.research.google.com)
-- Click **File** → **Open notebook**
-- Select **GitHub** tab
-- Enter: `https://github.com/your-username/your-repo-path` (or upload directly)
-- Alternatively: upload `notebooks/triposr_colab.ipynb` directly via **File** → **Upload notebook**
+- Click **File** → **Upload notebook**
+- Select: `notebooks/image_to_3d_colab.ipynb` (the updated one)
 
 #### 2. Enable GPU
 
 - Click **Runtime** → **Change runtime type**
-- Select **GPU** (any option: T4, V100, A100)
+- Select **GPU** (T4 or V100)
 - Click **Save**
-- Wait ~10 seconds for the runtime to restart
 
 #### 3. Run All Cells
 
-- Ensure you've placed the reference image at `assets/reference/pip_reference.png`
-- Click **Runtime** → **Run all** (or press Ctrl+F9 / Cmd+F9)
-- Follow prompts:
-  - **Step 4** will ask you to upload the reference image (or it will use the one in `assets/reference/`)
-  - **Step 5** runs inference (~1–3 minutes)
-  - **Step 7** downloads the GLB file directly to your machine
+- Click **Runtime** → **Run all**
+- Upload image when prompted (Step 2)
+- Wait for processing (~3–5 min)
+- Download `pip_model.glb`
 
 #### 4. Save Output
 
-After the notebook completes:
-1. Check your **Downloads** folder for `pip_model.glb`
-2. Move it to `assets/meshes/pip_model.glb`
+Move downloaded file to: `assets/meshes/pip_model.glb`
 
 ### Troubleshooting
 
 | Issue | Solution |
 |-------|----------|
-| "CUDA out of memory" | In Step 5, change `quality="medium"` to `quality="low"` for faster inference. Restart runtime if still failing. |
-| "No module named tripo_sr" | Re-run Step 1 (Install Dependencies) and wait for completion. Then restart runtime. |
-| Background removal looks bad | Remove the `remove_background()` call in Step 5 or pre-process the reference image before uploading. |
-| Mesh looks low-quality | Upload a higher-resolution reference image (at least 512×512). Ensure good lighting and clear character boundaries. |
+| "ModuleNotFoundError" | Try **Option A** (online tool) instead — more reliable |
+| "CUDA out of memory" | Restart Colab runtime (Runtime > Restart runtime) and retry |
+| Mesh looks low-quality | Upload a higher-resolution image (512×512 or larger) with good lighting |
+| Online tool is down | Use Colab notebook (Option B) as backup |
 
 ---
 
