@@ -1,0 +1,20 @@
+{
+  "name": "Pip Walking",
+  "animation": "pip_walk",
+  "frame_start": 1,
+  "frame_end": 120,
+  "playback_speed": 24,
+  "resolution": [1920, 1080],
+  "output_name": "pip_walk_01",
+  "output_format": "mp4",
+  "engine": "CYCLES",
+  "samples": 128,
+  "camera": {
+    "location": [2.5, -3, 1.5],
+    "rotation": [1.1, 0, 0.4],
+    "lens": 50
+  },
+  "background": {
+    "type": "transparent"
+  }
+}

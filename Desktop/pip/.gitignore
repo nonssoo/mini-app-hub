@@ -1,0 +1,36 @@
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.DS_Store
+*.egg-info/
+dist/
+build/
+
+# Assets (large files)
+assets/meshes/*.glb
+assets/meshes/*.obj
+assets/meshes/*.fbx
+assets/rigged/*.fbx
+assets/rigged/*.glb
+
+# Output
+output/renders/*.png
+output/renders/*.exr
+output/renders/*.mp4
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Blender
+*.blend1
+*.tmp
+
+# Local env
+.env
+.env.local

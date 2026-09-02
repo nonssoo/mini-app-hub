@@ -1,0 +1,12 @@
+# Stage 2: Mesh validation & Mixamo prep
+trimesh>=4.0.0
+numpy>=1.20.0
+
+# Stage 3: Blender automation (optional, only if you want to script Blender locally)
+# Note: Blender's bpy is bundled with Blender; install Blender separately from blender.org
+
+# Stage 4: Rendering utilities
+# (Will depend on Blender's Python API)
+
+# Optional but recommended: other mesh processing
+scipy>=1.7.0
