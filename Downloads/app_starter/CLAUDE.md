@@ -116,10 +116,23 @@ def add(
 
 ### Document Conversion
 
-The `tools/document.py` module uses **markitdown** to convert binary documents:
-- Supports DOCX (Word) and PDF formats
-- Takes binary data + file extension, returns markdown text
-- Used in tests via fixtures in `tests/fixtures/`
+The `tools/document.py` module provides two functions for document conversion using **markitdown**:
+
+1. **`binary_document_to_markdown(binary_data: bytes, file_type: str) -> str`**
+   - Converts binary document data (already loaded in memory) to markdown
+   - Takes file type as string (e.g., "pdf", "docx")
+   - Used when you already have binary content
+
+2. **`document_path_to_markdown(file_path: str) -> str`**
+   - Converts a document file from the filesystem to markdown
+   - Automatically detects file type from extension
+   - Raises `FileNotFoundError` if file doesn't exist
+   - Used for file-based workflows
+
+Both functions:
+- Support DOCX (Word) and PDF formats
+- Return markdown-formatted text
+- Are tested via fixtures in `tests/fixtures/`
 
 The markitdown library is configured in `pyproject.toml` with extras: `markitdown[docx,pdf]>=0.1.1`
 
