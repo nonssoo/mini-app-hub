@@ -345,7 +345,7 @@ Examples:
             print(f"\n✂️ Decimating mesh to {args.decimate * 100:.0f}%...")
             mesh = validation["mesh"]
             target_count = int(len(mesh.faces) * args.decimate)
-            mesh.simplify_mesh(target_count=target_count, agggressive=True)
+            mesh.simplify_mesh(target_count=target_count, aggressive=True)
             print(f"  ✓ Decimated to {len(mesh.faces):,} faces")
             validation["mesh"] = mesh
 

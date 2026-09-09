@@ -18,7 +18,7 @@ except ImportError:
     sys.exit(1)
 
 
-def repair_mesh(input_path: Path, output_path: Path):
+def repair_mesh(input_path: Path, output_path: Path) -> None:
     """Repair mesh for Mixamo compatibility."""
     print(f"\n🔧 Repairing mesh: {input_path.name}")
     print("-" * 60)
@@ -45,7 +45,7 @@ def repair_mesh(input_path: Path, output_path: Path):
     # Remove duplicate/degenerate faces
     print("  Removing degenerate faces...")
     mask = mesh.nondegenerate_faces()
-    mesh = mesh.submesh([mask], append=True)
+    mesh = mesh.submesh(mask, append=True)
 
     # Fill small holes
     print("  Filling holes...")

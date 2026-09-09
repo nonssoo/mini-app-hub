@@ -31,7 +31,7 @@ def load_shot_config(config_path: str) -> dict:
         return json.load(f)
 
 
-def get_nla_track_duration(armature, track_name: str) -> tuple:
+def get_nla_track_duration(armature: object, track_name: str) -> tuple:
     """Get frame range for an NLA track. Returns (start_frame, end_frame)."""
     if not armature.animation_data or not armature.animation_data.nla_tracks:
         return (1, 250)  # Default
@@ -53,7 +53,7 @@ def find_armature() -> object:
     return None
 
 
-def configure_shot(shot_config: dict):
+def configure_shot(shot_config: dict) -> None:
     """Apply shot configuration to scene."""
     print(f"\n📹 Configuring shot: {shot_config.get('name', 'Untitled')}")
     print("-" * 60)
@@ -129,7 +129,7 @@ def configure_shot(shot_config: dict):
 
     if "samples" in shot_config:
         # Cycles render samples
-        if scene.cycles:
+        if scene.render.engine == 'CYCLES':
             scene.cycles.samples = shot_config["samples"]
         print(f"  Samples: {shot_config['samples']}")
 
@@ -195,7 +195,7 @@ def setup_output(shot_config: dict, output_dir: Path) -> str:
     return str(output_path)
 
 
-def render_shot(shot_config: dict):
+def render_shot(shot_config: dict) -> None:
     """Render a single shot."""
     print(f"\n🎬 Rendering: {shot_config.get('name', 'Untitled')}")
     print("-" * 60)
