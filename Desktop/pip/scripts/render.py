@@ -61,21 +61,29 @@ def configure_shot(shot_config: dict) -> None:
     # Get scene
     scene = bpy.context.scene
 
-    # Frame range from config or auto-detect from animation
-    if "animation" in shot_config:
-        anim_name = shot_config["animation"]
-        armature = find_armature()
-        if armature:
-            start, end = get_nla_track_duration(armature, anim_name)
-            print(f"  Animation: {anim_name}")
-            print(f"  Frames: {start}–{end}")
+    # Frame range: explicit config takes priority, then animation auto-detect
+    start = shot_config.get("frame_start")
+    end = shot_config.get("frame_end")
+
+    if start is None or end is None:
+        # Auto-detect from animation if not explicitly set
+        if "animation" in shot_config:
+            anim_name = shot_config["animation"]
+            armature = find_armature()
+            if armature:
+                start, end = get_nla_track_duration(armature, anim_name)
+                print(f"  Animation: {anim_name} (auto-detected)")
+            else:
+                start, end = 1, 250
+                print(f"  ⚠ No armature found; using default frames {start}–{end}")
         else:
-            start, end = 1, 250
-            print(f"  ⚠ No armature found; using default frames {start}–{end}")
+            start = start or 1
+            end = end or 250
     else:
-        start = shot_config.get("frame_start", 1)
-        end = shot_config.get("frame_end", 250)
-        print(f"  Frames: {start}–{end}")
+        if "animation" in shot_config:
+            print(f"  Animation: {shot_config['animation']}")
+
+    print(f"  Frames: {start}–{end}")
 
     scene.frame_start = start
     scene.frame_end = end

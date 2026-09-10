@@ -1,0 +1,30 @@
+{
+  "name": "Pip Idle Pose",
+  "description": "Static idle pose - simple test render",
+  "animation": "pip_idle",
+  "frame_start": 1,
+  "frame_end": 10,
+  "playback_speed": 24,
+  "resolution": [1280, 720],
+  "output_name": "pip_idle_test",
+  "output_format": "image_sequence",
+  "engine": "CYCLES",
+  "samples": 64,
+  "camera": {
+    "location": [0, -2.5, 1.2],
+    "rotation": [1.1, 0, 0],
+    "lens": 50
+  },
+  "lighting": {
+    "keylight": {
+      "energy": 1.5,
+      "angle": [0.5, -0.5]
+    },
+    "filllight": {
+      "energy": 0.8
+    }
+  },
+  "background": {
+    "type": "transparent"
+  }
+}
