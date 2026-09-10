@@ -129,22 +129,23 @@ def configure_shot(shot_config: dict) -> None:
 
     # Render settings
     render = scene.render
+    # Engine (set FIRST, before samples)
+    if "engine" in shot_config:
+        scene.render.engine = shot_config["engine"]
+        print(f"  Render engine: {shot_config['engine']}")
+
+    # Resolution
     if "resolution" in shot_config:
         res = shot_config["resolution"]
         render.resolution_x = res[0]
         render.resolution_y = res[1]
         print(f"  Resolution: {res[0]}×{res[1]}")
 
+    # Samples (now engine is set)
     if "samples" in shot_config:
-        # Cycles render samples
         if scene.render.engine == 'CYCLES':
             scene.cycles.samples = shot_config["samples"]
         print(f"  Samples: {shot_config['samples']}")
-
-    # Engine
-    if "engine" in shot_config:
-        scene.render.engine = shot_config["engine"]
-        print(f"  Render engine: {shot_config['engine']}")
 
     print("  ✓ Configuration applied")
 
