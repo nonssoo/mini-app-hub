@@ -161,7 +161,7 @@ def setup_output(shot_config: dict, output_dir: Path) -> str:
         # Video output
         render.image_settings.file_format = 'FFMPEG'
         render.ffmpeg.format = 'MPEG4'
-        render.ffmpeg.codec = 'h264'
+        render.ffmpeg.codec = 'H264'
         output_path = output_dir / f"{filename}.mp4"
         render.filepath = str(output_path)
         print(f"  Output format: MP4 video")
@@ -188,6 +188,7 @@ def setup_output(shot_config: dict, output_dir: Path) -> str:
         # Default to MP4
         render.image_settings.file_format = 'FFMPEG'
         render.ffmpeg.format = 'MPEG4'
+        render.ffmpeg.codec = 'H264'
         output_path = output_dir / f"{filename}.mp4"
         render.filepath = str(output_path)
 
