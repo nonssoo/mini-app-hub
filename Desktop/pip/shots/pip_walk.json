@@ -1,15 +1,15 @@
 {
-  "name": "Pip Idle Pose",
-  "description": "Static idle pose - simple test render",
-  "animation": "pip_idle",
+  "name": "Pip Walking - Front View",
+  "description": "Walking animation loop - front view",
+  "animation": "pip_walk",
   "frame_start": 1,
-  "frame_end": 10,
+  "frame_end": 60,
   "playback_speed": 24,
   "resolution": [1280, 720],
-  "output_name": "pip_idle_test",
-  "output_format": "image_sequence",
+  "output_name": "pip_walk_front",
+  "output_format": "mp4",
   "engine": "CYCLES",
-  "samples": 64,
+  "samples": 96,
   "camera": {
     "location": [0, -2.5, 2.5],
     "rotation": [0.8, 0, 0],
@@ -22,6 +22,9 @@
     },
     "filllight": {
       "energy": 0.8
+    },
+    "backlight": {
+      "energy": 0.6
     }
   },
   "background": {
