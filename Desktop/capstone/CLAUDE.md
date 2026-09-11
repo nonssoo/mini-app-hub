@@ -85,9 +85,9 @@ Lists PR numbers that have been reviewed. Delete this file to reset tracking.
 |------|---------|
 | `mcp_server.py` | MCP server exposing GitHub tools and company security policy |
 | `mcp_bot.py` | Main polling loop; orchestrates MCP calls and Claude reviews |
-| `code-quality-enforcer.md` | Agent skill: focuses review on code structure, SOLID principles, complexity |
-| `security-auditor.md` | Agent skill: flags OWASP vulnerabilities, hardcoded secrets, weak crypto |
-| `test-generator.md` | Agent skill: suggests unit test coverage and edge cases |
+| `.claude/skills/code-quality-enforcer.md` | Agent skill: focuses review on code structure, SOLID principles, complexity |
+| `.claude/skills/security-auditor.md` | Agent skill: flags OWASP vulnerabilities, hardcoded secrets, weak crypto |
+| `.claude/skills/test-generator.md` | Agent skill: suggests unit test coverage and edge cases |
 | `requirements.txt` | Python dependencies |
 | `.env` | API keys and repo configuration (NOT committed) |
 | `reviewed_prs.json` | State file tracking which PRs have been reviewed (auto-created) |
@@ -103,7 +103,7 @@ Lists PR numbers that have been reviewed. Delete this file to reset tracking.
 
 ### Claude API Integration
 - Model: `claude-3-5-sonnet-20241022` (adjust if needed)
-- System prompt is loaded from the skill files (code-quality-enforcer, security-auditor, test-generator)
+- System prompt is loaded from `.claude/skills/security-auditor.md` (can be extended to support other skills)
 - Max tokens set to 1024 (sufficient for review summaries; increase if reviews are truncated)
 
 ### GitHub API Usage
@@ -116,7 +116,7 @@ Lists PR numbers that have been reviewed. Delete this file to reset tracking.
 **Type hints**: All function parameters should have explicit type annotations (memory note: apply to all functions).
 
 **Extending the bot**:
-1. **Add new skills**: Create a `.md` file with the skill format (name, description, system prompt). Load in `mcp_bot.py` alongside the existing ones.
+1. **Add new skills**: Create a `.md` file in `.claude/skills/` with the skill format (name, description, system prompt). Update the `open()` call in `mcp_bot.py` to reference it.
 2. **Add new MCP tools**: Define them in `mcp_server.py` with `@mcp.tool()` decorator. Make sure to call `.run()` at the end.
 3. **Change review cadence**: Modify `time.sleep(60)` in the polling loop.
 
