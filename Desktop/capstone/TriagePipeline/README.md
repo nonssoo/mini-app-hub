@@ -1,8 +1,8 @@
-# Project Aegis: Automated Incident Response Bot
+# TriageBot: Automated Incident Response Bot
 
 ## 🎯 Project Overview
 
-**Project Aegis** is an intelligent infrastructure monitoring and incident triage system that automatically detects service failures, analyzes them using Claude AI, and generates actionable triage reports posted to Microsoft Teams.
+**TriageBot** is an intelligent infrastructure monitoring and incident triage system that automatically detects service failures, analyzes them using Claude AI, and generates actionable triage reports posted to Microsoft Teams.
 
 The system combines:
 - **Infrastructure Monitoring**: Real-time health checks of web services
@@ -12,7 +12,7 @@ The system combines:
 - **Incident Knowledge Base**: Company-wide runbooks guide remediation steps
 
 ### Key Problem Solved
-When infrastructure services fail, teams waste critical time gathering logs, searching runbooks, and determining root causes. Project Aegis automates this triage process—Claude becomes your incident commander, analyzing failures within seconds and posting structured remediation steps to Teams.
+When infrastructure services fail, teams waste critical time gathering logs, searching runbooks, and determining root causes. TriageBot automates this triage process—Claude becomes your incident commander, analyzing failures within seconds and posting structured remediation steps to Teams.
 
 ---
 
@@ -639,4 +639,4 @@ This project uses:
 
 **Last Updated**: 2026-09-12  
 **Status**: Production-ready  
-**Maintainer**: Project Aegis Team
+**Maintainer**: TriageBot Team

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Project Aegis** is an incident response automation system that monitors infrastructure services, analyzes error logs, and generates triage reports via Microsoft Teams. The system uses Claude AI combined with Model Context Protocol (MCP) to correlate infrastructure logs with company runbooks and provide actionable incident remediation steps.
+**TriageBot** is an incident response automation system that monitors infrastructure services, analyzes error logs, and generates triage reports via Microsoft Teams. The system uses Claude AI combined with Model Context Protocol (MCP) to correlate infrastructure logs with company runbooks and provide actionable incident remediation steps.
 
 ### Core Architecture
 
@@ -93,9 +93,9 @@ Deterministic output is critical for incident response. Randomness in triage rec
 
 ### Subprocess Connection Error
 
-**Issue**: `mcp_bot.py` references `aegis_mcp_server.py` in the `StdioServerParameters` but the file is actually named `mcp_server.py`.
+**Issue**: `mcp_bot.py` references the wrong filename in the `StdioServerParameters`.
 
-**Fix**: Update line 28 in mcp_bot.py from `args=["aegis_mcp_server.py"]` to `args=["mcp_server.py"]`.
+**Fix**: Ensure `args=["mcp_server.py"]` matches your actual MCP server filename.
 
 ### Missing TEAMS_WEBHOOK_URL
 
@@ -106,7 +106,7 @@ If the Teams webhook fails silently, ensure the URL is valid and the Teams conne
 Per project standards, all function parameters and return values must have explicit type annotations. Example:
 
 ```python
-def run_aegis() -> None:
+def run_triagebot() -> None:
     """..."""
     logs: str
     runbook: str

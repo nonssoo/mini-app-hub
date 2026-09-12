@@ -1,4 +1,4 @@
-# Technical Deep Dive: Project Aegis Code Walkthrough
+# Technical Deep Dive: TriageBot Code Walkthrough
 
 ## 📌 What Was Done in This Session
 
