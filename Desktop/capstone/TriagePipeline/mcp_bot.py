@@ -72,11 +72,12 @@ def run_triagebot():
                     # Send to Claude API
                     print("🤖 Analyzing incident with Claude...")
                     message = client.messages.create(
-                        model="claude-sonnet-5", # FIXED: Valid model name
+                        model="claude-sonnet-5",
                         max_tokens=1024,
+                        temperature=0,
                         system=SYSTEM_PROMPT,
                         messages=[{
-                            "role": "user", 
+                            "role": "user",
                             "content": f"ALERT: The server at {MONITORING_TARGET} is experiencing issues:\n\n{current_status}\n\nHere is the company runbook:\n\n{runbook}\n\nPlease generate the triage report."
                         }]
                     )
