@@ -59,7 +59,6 @@ def run_aegis():
     message = client.messages.create(
         model="claude-sonnet-5",
         max_tokens=1024,
-        temperature=0.0, # Deterministic output for incident response
         system=SYSTEM_PROMPT,
         messages=[{
             "role": "user", 
@@ -67,9 +66,13 @@ def run_aegis():
         }]
     )
     
-    triage_report = message.content[0].text
-    
+    triage_report = next(
+        (block.text for block in message.content if hasattr(block, "text")),
+        ""
+    )
+
     # 3. Post to Microsoft Teams
+    print("\n" + triage_report + "\n")
     print("Sending report to Microsoft Teams...")
     teams_payload = {
         "text": f"##  Project Aegis Incident Report\n\n{triage_report}"
