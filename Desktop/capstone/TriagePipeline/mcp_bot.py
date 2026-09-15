@@ -22,36 +22,46 @@ client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
 with open(".claude/skills/incident-commander.md", "r") as f:
     SYSTEM_PROMPT = f.read()
 
+# Runbook caching (refresh every hour)
+_cached_runbook: str | None = None
+_runbook_last_fetched: float = 0
+RUNBOOK_CACHE_TTL: int = 3600
+
 # --- 2. THE MCP CLIENT LOGIC ---
-async def check_server_status():
+async def check_server_status() -> tuple[str, str]:
     """Connects to MCP Server to check the live website status and fetch the runbook."""
+    global _cached_runbook, _runbook_last_fetched
+
     server_params = StdioServerParameters(
-        command="python3", 
-        args=["mcp_server.py"] # Make sure this matches your MCP server filename
+        command="python3",
+        args=["mcp_server.py"]
     )
-    
+
     async with stdio_client(server_params) as (read, write):
         async with ClientSession(read, write) as session:
             await session.initialize()
-            
+
             # A. Check the live server status (Using an MCP Tool)
-            print("🔍 Checking server status via MCP Tool...")
+            print("Checking server status via MCP Tool...")
             status_result = await session.call_tool(
-                "check_website_status", 
+                "check_website_status",
                 arguments={"url": MONITORING_TARGET}
             )
             status_text = status_result.content[0].text
-            
-            # B. Fetch the Company Runbook (Using an MCP Resource)
-            print("📖 Fetching company runbook via MCP Resource...")
-            resource_result = await session.read_resource("company://incident-runbooks")
-            runbook = resource_result.contents[0].text
-            
-            return status_text, runbook
+
+            # B. Fetch the Company Runbook (Using an MCP Resource) – with caching
+            current_time: float = time.time()
+            if _cached_runbook is None or (current_time - _runbook_last_fetched) > RUNBOOK_CACHE_TTL:
+                print("Fetching company runbook via MCP Resource...")
+                resource_result = await session.read_resource("company://incident-runbooks")
+                _cached_runbook = resource_result.contents[0].text
+                _runbook_last_fetched = current_time
+
+            return status_text, _cached_runbook
 
 # --- 3. THE AI & TEAMS INTEGRATION ---
-def run_triagebot():
-    print(f"🛡️ TriageBot started. Monitoring {MONITORING_TARGET}")
+def run_triagebot() -> None:
+    print(f"TriageBot started. Monitoring {MONITORING_TARGET}")
     print("Waiting for issues... (Press Ctrl+C to stop the bot)\n")
     
     last_status = None
@@ -67,17 +77,17 @@ def run_triagebot():
                 
                 # Check for common error indicators in the status text
                 if "500" in current_status or "503" in current_status or "CONNECTION_ERROR" in current_status or "TIMEOUT" in current_status:
-                    print("🚨 ALERT: Server issue detected!")
-                    
+                    print("ALERT: Server issue detected!")
+
                     # Send to Claude API
-                    print("🤖 Analyzing incident with Claude...")
+                    print("Analyzing incident with Claude...")
                     message = client.messages.create(
                         model="claude-sonnet-5",
                         max_tokens=1024,
                         temperature=0,
                         system=SYSTEM_PROMPT,
                         messages=[{
-                            "role": "user",
+                            "role": "user", 
                             "content": f"ALERT: The server at {MONITORING_TARGET} is experiencing issues:\n\n{current_status}\n\nHere is the company runbook:\n\n{runbook}\n\nPlease generate the triage report."
                         }]
                     )
@@ -85,7 +95,7 @@ def run_triagebot():
                     triage_report = message.content[0].text
                     
                     # Post to Microsoft Teams
-                    print("📩 Sending report to Microsoft Teams...")
+                    print("Sending report to Microsoft Teams...")
                     adaptive_card = {
                         "type": "message",
                         "attachments": [
@@ -99,7 +109,7 @@ def run_triagebot():
                                     "body": [
                                         {
                                             "type": "TextBlock",
-                                            "text": "🚨 TriageBot Infrastructure Alert",
+                                            "text": "TriageBot Infrastructure Alert",
                                             "weight": "Bolder",
                                             "size": "Large",
                                             "color": "Attention"
@@ -144,23 +154,21 @@ def run_triagebot():
                     
                     response = requests.post(TEAMS_WEBHOOK_URL, json=adaptive_card)
                     if response.status_code in (200, 202):
-                        print(" SUCCESS! Alert posted to Teams.")
+                        print("SUCCESS! Alert posted to Teams.")
                     else:
-                        print(f" FAILED to post to Teams. Status: {response.status_code}")
+                        print(f"FAILED to post to Teams. Status: {response.status_code}")
                         print(f"Response body: {response.text}")
                 
                 else:
                     # If it was down and is now back up, or just starting healthy
-                    if last_status is not None and ("ERROR" in last_status or "500" in last_status):
-                        print("✅ Server has recovered and is now healthy.")
-                    else:
-                        print("✅ Server is healthy.")
+                    recovery_msg = " has recovered" if last_status and ("ERROR" in last_status or "500" in last_status) else ""
+                    print(f"Server{recovery_msg} is now healthy.")
                 
                 # Update the last known status
                 last_status = current_status
             
         except Exception as e:
-            print(f" Error during check: {e}")
+            print(f"Error during check: {e}")
         
         # Wait 10 seconds before checking again
         time.sleep(10)
