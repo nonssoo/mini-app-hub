@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#fbf5f7">
+    <meta name="description" content="A gentle, private period and cycle tracker that keeps your data on your device.">
+    <title>Petal — your cycle, your notes</title>
+    <link rel="stylesheet" href="./styles.css">
+    <script type="module" src="./src/app.js"></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="site-header">
+        <a class="brand" href="#today" aria-label="Petal home">
+          <span class="brand-mark" aria-hidden="true">p</span>
+          <span class="brand-copy"><strong>petal</strong><small>your cycle, your notes</small></span>
+        </a>
+        <span class="privacy-chip"><span aria-hidden="true">●</span> private on this device</span>
+      </header>
+
+      <main id="main-content">
+        <div class="safety-banner" role="note">
+          <span class="safety-icon" aria-hidden="true">i</span>
+          <p>Cycle and fertile-window estimates can be wrong. <strong>This app is not contraception.</strong> Use reliable protection if you want to avoid pregnancy.</p>
+        </div>
+        <div id="storage-notice" class="notice" role="status" hidden></div>
+        <div id="page-content"></div>
+      </main>
+
+      <nav class="bottom-nav" aria-label="Main navigation">
+        <button type="button" class="nav-item" data-page="today" aria-current="page">
+          <span class="nav-icon" aria-hidden="true">⌂</span><span>Today</span>
+        </button>
+        <button type="button" class="nav-item" data-page="calendar">
+          <span class="nav-icon" aria-hidden="true">▦</span><span>Calendar</span>
+        </button>
+        <button type="button" class="nav-item" data-page="insights">
+          <span class="nav-icon" aria-hidden="true">⌁</span><span>Insights</span>
+        </button>
+        <button type="button" class="nav-item" data-page="astro">
+          <span class="nav-icon" aria-hidden="true">✳</span><span>Astro</span>
+        </button>
+        <button type="button" class="nav-item" data-page="wellness">
+          <span class="nav-icon" aria-hidden="true">♡</span><span>Wellness</span>
+        </button>
+        <button type="button" class="nav-item" data-page="settings">
+          <span class="nav-icon" aria-hidden="true">⚙</span><span>Settings</span>
+        </button>
+      </nav>
+    </div>
+
+    <dialog id="day-dialog" class="modal">
+      <form id="day-form" method="dialog">
+        <div class="modal-heading">
+          <div><p class="eyebrow">YOUR DAILY NOTE</p><h2 id="day-form-title">Log a day</h2></div>
+          <button type="button" class="icon-button" data-action="close-day" aria-label="Close">×</button>
+        </div>
+        <label class="field-label" for="day-date">Date</label>
+        <input id="day-date" name="date" type="date" required>
+        <label class="field-label" for="day-flow">Bleeding / flow</label>
+        <select id="day-flow" name="flow">
+          <option value="">No bleeding</option>
+          <option value="light">Light</option>
+          <option value="medium">Medium</option>
+          <option value="heavy">Heavy</option>
+        </select>
+        <fieldset class="symptom-fieldset">
+          <legend>Symptoms</legend>
+          <div id="symptom-options" class="symptom-options"></div>
+        </fieldset>
+        <p class="field-hint">Only the date and notes you choose are saved on this device.</p>
+        <div class="form-actions">
+          <button id="delete-day-button" type="button" class="button button-danger" data-action="delete-day" hidden>Delete entry</button>
+          <span class="form-action-spacer"></span>
+          <button type="button" class="button button-secondary" data-action="close-day">Cancel</button>
+          <button type="submit" class="button button-primary">Save day</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="period-dialog" class="modal">
+      <form id="period-form" method="dialog">
+        <div class="modal-heading">
+          <div><p class="eyebrow">PERIOD LOG</p><h2>Mark period days</h2></div>
+          <button type="button" class="icon-button" data-action="close-period" aria-label="Close">×</button>
+        </div>
+        <p class="field-hint">Choose the first and last day. You can adjust the flow or symptoms for any individual day later.</p>
+        <label class="field-label" for="period-start">First day</label>
+        <input id="period-start" name="startDate" type="date" required>
+        <label class="field-label" for="period-end">Last day</label>
+        <input id="period-end" name="endDate" type="date" required>
+        <label class="field-label" for="period-flow">Flow for these days</label>
+        <select id="period-flow" name="flow" required>
+          <option value="light">Light</option>
+          <option value="medium" selected>Medium</option>
+          <option value="heavy">Heavy</option>
+        </select>
+        <div class="form-actions">
+          <span class="form-action-spacer"></span>
+          <button type="button" class="button button-secondary" data-action="close-period">Cancel</button>
+          <button type="submit" class="button button-primary">Save period</button>
+        </div>
+      </form>
+    </dialog>
+  </body>
+</html>
