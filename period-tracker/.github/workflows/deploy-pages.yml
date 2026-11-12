@@ -1,4 +1,4 @@
-name: Deploy Petal to GitHub Pages
+name: Deploy Wura's Petal to GitHub Pages
 
 on:
   push:

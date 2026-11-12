@@ -9,8 +9,8 @@ export default defineConfig({
       injectRegister: null,
       includeAssets: ["petal.svg"],
       manifest: {
-        name: "Petal — your cycle, your notes",
-        short_name: "Petal",
+        name: "Wura's Petal — your cycle, your notes",
+        short_name: "Wura's Petal",
         description: "A private period and cycle tracker that runs on your device.",
         theme_color: "#fbf5f7",
         background_color: "#fbf5f7",

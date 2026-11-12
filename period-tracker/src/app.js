@@ -496,7 +496,7 @@ function renderWellness() {
         <details class="card education-card"><summary>PCOS and the whole body</summary><p>Polycystic ovary syndrome (PCOS) is a hormone-related condition that can affect ovulation and may be associated with skin or hair changes and how the body manages blood sugar. Experiences differ. An ultrasound or one symptom alone cannot diagnose PCOS; a healthcare professional assesses the full picture.</p></details>
         <details class="card education-card"><summary>Hygiene without shame</summary><p>Wash the vulva externally with water or a gentle, unscented cleanser if you prefer. The vagina cleans itself; douching and scented internal products can irritate it. Wash your hands before and after changing a period product. Follow that product’s instructions, change it regularly, and choose what feels comfortable.</p></details>
       </div>
-      <article class="card pcos-tips"><p class="eyebrow">DAY-TO-DAY TIPS FOR LIVING WITH PCOS</p><h3>Small, realistic steps</h3><ul><li>Consider tracking periods or symptoms if it helps you prepare for a clinician visit; you do not need perfect records.</li><li>Choose regular, satisfying meals and snacks that work for your life, preferences, culture, and budget. No single “PCOS diet” is right for everyone.</li><li>Move in ways that feel enjoyable or accessible. Rest also matters.</li><li>Protect sleep where you can and ask your clinician about symptoms that are changing or worrying you.</li><li>Ask a healthcare professional about treatment options tailored to your goals. Supplements and restrictive diets are not a substitute for medical advice.</li></ul><p class="field-hint">These are general ideas, not a PCOS treatment plan. Petal cannot diagnose PCOS.</p></article>
+      <article class="card pcos-tips"><p class="eyebrow">DAY-TO-DAY TIPS FOR LIVING WITH PCOS</p><h3>Small, realistic steps</h3><ul><li>Consider tracking periods or symptoms if it helps you prepare for a clinician visit; you do not need perfect records.</li><li>Choose regular, satisfying meals and snacks that work for your life, preferences, culture, and budget. No single “PCOS diet” is right for everyone.</li><li>Move in ways that feel enjoyable or accessible. Rest also matters.</li><li>Protect sleep where you can and ask your clinician about symptoms that are changing or worrying you.</li><li>Ask a healthcare professional about treatment options tailored to your goals. Supplements and restrictive diets are not a substitute for medical advice.</li></ul><p class="field-hint">These are general ideas, not a PCOS treatment plan. Wura's Petal cannot diagnose PCOS.</p></article>
     </section>
   `;
 }
@@ -614,7 +614,7 @@ function renderSettings() {
     <section class="settings-grid">
       <article class="card settings-card"><p class="eyebrow">APPEARANCE</p><h2>Choose your colors</h2><label class="field-label" for="theme-select">Theme</label><select id="theme-select"><option value="system" ${state.theme === "system" ? "selected" : ""}>Match my device</option><option value="light" ${state.theme === "light" ? "selected" : ""}>Light</option><option value="dark" ${state.theme === "dark" ? "selected" : ""}>Dark</option></select></article>
       <article class="card settings-card"><p class="eyebrow">JUST FOR FUN</p><h2>Birthday</h2><p class="muted">Optional. Used only to show your sun sign in the entertainment section.</p><label class="field-label" for="birth-date">Birth date</label><input id="birth-date" type="date" max="${today}" value="${escapeHTML(state.birthDate ?? "")}"><p class="field-hint">This is not used for health calculations.</p></article>
-      <article class="card settings-card privacy-card"><p class="eyebrow">YOUR DATA</p><h2>Private, right here</h2><p>Period, symptom, mood, food, and journal entries stay in this browser. Petal does not send your notes or chat over the internet. Model files download from Hugging Face and GitHub; chat runs in your browser and is not saved by Petal.</p><div class="settings-actions"><button class="button button-secondary" data-action="export-data">Export a JSON copy</button><button class="button button-secondary" data-action="delete-assistant-model">Remove downloaded AI model</button><button class="button button-danger" data-action="delete-all">Delete all tracker data</button></div><p class="field-hint">Removing the AI model frees its downloaded storage; tracker data is kept. Delete all tracker data does not delete the model.</p></article>
+      <article class="card settings-card privacy-card"><p class="eyebrow">YOUR DATA</p><h2>Private, right here</h2><p>Period, symptom, mood, food, and journal entries stay in this browser. Wura's Petal does not send your notes or chat over the internet. Model files download from Hugging Face and GitHub; chat runs in your browser and is not saved by Wura's Petal.</p><div class="settings-actions"><button class="button button-secondary" data-action="export-data">Export a JSON copy</button><button class="button button-secondary" data-action="delete-assistant-model">Remove downloaded AI model</button><button class="button button-danger" data-action="delete-all">Delete all tracker data</button></div><p class="field-hint">Removing the AI model frees its downloaded storage; tracker data is kept. Delete all tracker data does not delete the model.</p></article>
       <article class="card settings-card"><p class="eyebrow">HEALTH NOTE</p><h2>When to see a doctor</h2><p>Contact a healthcare professional about cycles shorter than 21 or longer than 35 days, periods longer than 7 days, very heavy bleeding, severe pain, or a missed period.</p><p class="field-hint">This app is not contraception or a medical device. Estimates can be wrong. If you are worried about your health, contact a clinician.</p></article>
     </section>
   `;
@@ -1035,7 +1035,7 @@ function readState() {
       theme: ["system", "light", "dark"].includes(parsed.theme) ? parsed.theme : "system",
     };
   } catch (error) {
-    console.error("Could not read Petal data from this browser.", error);
+    console.error("Could not read Wura's Petal data from this browser.", error);
     queueMicrotask(() => showNotice("Saved data could not be read. It has not been overwritten; export or inspect this browser's storage before saving new changes."));
     return base;
   }
@@ -1046,14 +1046,14 @@ function saveState() {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     storageNotice.hidden = true;
   } catch (error) {
-    console.error("Could not save Petal data in this browser.", error);
+    console.error("Could not save Wura's Petal data in this browser.", error);
     showNotice("Your change could not be saved in this browser. Check device storage before closing this page.");
   }
 }
 
 function exportData() {
   const payload = {
-    app: "Petal cycle tracker",
+    app: "Wura's Petal cycle tracker",
     formatVersion: state.version,
     exportedAt: new Date().toISOString(),
     data: state,
@@ -1062,18 +1062,18 @@ function exportData() {
   const url = URL.createObjectURL(file);
   const link = document.createElement("a");
   link.href = url;
-  link.download = `petal-data-${today}.json`;
+  link.download = `wuras-petal-data-${today}.json`;
   link.click();
   URL.revokeObjectURL(url);
   showNotice("A copy of your data was downloaded to this device.");
 }
 
 function deleteAllData() {
-  if (!window.confirm("Delete all period, symptom, mood, food, journal, and birthday data stored by Petal on this device? This cannot be undone.")) return;
+  if (!window.confirm("Delete all period, symptom, mood, food, journal, and birthday data stored by Wura's Petal on this device? This cannot be undone.")) return;
   try {
     window.localStorage.removeItem(STORAGE_KEY);
   } catch (error) {
-    console.error("Could not delete Petal data from this browser.", error);
+    console.error("Could not delete Wura's Petal data from this browser.", error);
     return showNotice("The browser could not remove your saved data. You may need to clear this site's storage in browser settings.");
   }
   state.entries = {};
@@ -1085,7 +1085,7 @@ function deleteAllData() {
   editingMealId = null;
   visibleMonth = monthForDate(today);
   render();
-  showNotice("All Petal data was deleted from this device.");
+  showNotice("All Wura's Petal data was deleted from this device.");
 }
 
 document.addEventListener("change", (event) => {
